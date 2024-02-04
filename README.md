@@ -8,15 +8,15 @@ Project MyNavDrawer merupakan project yang memuat mengenai pemakaian navigation 
 4. Menangani back press.
 
 ## What I Learn
-1.Opsi untuk menampilkan navigation drawer ada banyak, contohnya :
- * ModalNavigationDrawer : Pop Up menu yang biasa muncul didepan halaman (yang digunakan di project ini)
- * PermanentNavigationDrawer : Menu sidebar yang selalu muncul di samping halaman utama
- * DismissibleNavigationDrawer : Menu sidebar yang bisa dimunculkan/dihilangkan di samping halaman utama
+1. Opsi untuk menampilkan navigation drawer ada banyak, contohnya :
+  * ModalNavigationDrawer : Pop Up menu yang biasa muncul didepan halaman (yang digunakan di project ini)
+  * PermanentNavigationDrawer : Menu sidebar yang selalu muncul di samping halaman utama
+  * DismissibleNavigationDrawer : Menu sidebar yang bisa dimunculkan/dihilangkan di samping halaman utama
 2. rememberDrawerState : state untuk mengetahui kondisi navigation drawer melalui method isOpen/isClosed
 3. remmeberCoroutineScope : memanggil Coroutine di dalam Composable
 4. Nilai default state gesture di navigationBar yaitu isOpen, isClosed sehingga diperlukan construktor gestureEnabled = drawerState.isOpen . drawerState merupakan object( val drawerState)
 5. LocalContext.current untuk mendapatkan nilai context pada posisi terkini. Contoh case:
- * Untuk menampilkan Toast diperlukan Context yang diperoleh dari LocalContext.current
+  * Untuk menampilkan Toast diperlukan Context yang diperoleh dari LocalContext.current
 6. SnackbarResult.ActionPerformed = melakukan aksi
 7. SnackbarResult.Dismissed = melakukan sesuatu ketika Snackbar diabaikan
 8. Menangani aksi back ada 2 cara, manual dan menggunakan wrapper bawaan yaitu BackHandler{ }
