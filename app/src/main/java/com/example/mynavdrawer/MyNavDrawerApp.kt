@@ -50,6 +50,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MyNavDrawerApp() {
+    //WITH NO VIEW MODEL
+    /*
     //RemmeberDrawerState untuk mengetahui kondisi navigation drawer dg job isOpen/isClosed
     //rememberCoroutineScope = digunakan untuk memanggil coroutine di dlm composabble
     //why this happen? Fungsi open dn close = susopend Function, krna itu prlu coroutine untuk memanggilnya
@@ -58,13 +60,23 @@ fun MyNavDrawerApp() {
     val snackbarHostState = remember { SnackbarHostState() }
     //Kegunaan LocalContext.current?
     val context = LocalContext.current
+     */
 
+    val appState = rememberMyNavDrawerState()
 
+    //WITH NO VIEW MODEL
+    /*
     //Backhandler
     BackPressHandler(enabled = drawerState.isOpen) {
         scope.launch {
             drawerState.close()
         }
+    }
+    */
+
+    //Bckhandler
+    BackPressHandler(enabled = appState.drawerState.isOpen) {
+        appState.onBackPress()
     }
 
     val items = listOf(
@@ -85,10 +97,16 @@ fun MyNavDrawerApp() {
     val selectedItem = remember { mutableStateOf(items[0]) }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        /*With No View Model
+//        snackbarHost = { SnackbarHost(snackbarHostState) },
+
+         */
+        snackbarHost = { SnackbarHost(appState.snackbarHostState) },
         topBar = {
             MyTopBar(
+                /* With No ViewModel
                 onMenuClick = {
+                    //logika bisnisnya
                     scope.launch {
                         //isOpen, isCancel dll termasuk job
                         if (drawerState.isClosed) {
@@ -97,15 +115,22 @@ fun MyNavDrawerApp() {
                             drawerState.close()
                         }
                     }
-                }
+                    */
+                onMenuClick = appState::onMenuClick
             )
         },
     ) { paddingValues ->
         ModalNavigationDrawer(
+            /* With No View Model
             modifier = Modifier.padding(paddingValues),
             drawerState = drawerState,
             //Default gesture = open dan close. Misal dideklare hnya itu aja yg dipakai
             gesturesEnabled = drawerState.isOpen,
+            drawerContent = {
+             */
+            modifier = Modifier.padding(paddingValues),
+            drawerState = appState.drawerState,
+            gesturesEnabled = appState.drawerState.isOpen,
             drawerContent = {
                 ModalDrawerSheet {
                     Spacer(modifier = Modifier.height(12.dp))
@@ -115,6 +140,7 @@ fun MyNavDrawerApp() {
                             label = { Text(text = item.title) },
                             selected = item == selectedItem.value,
                             onClick = {
+                                /* With No View Model
                                 scope.launch {
                                     drawerState.close()
                                     //AKSI PADA SNACKBAR
@@ -142,6 +168,9 @@ fun MyNavDrawerApp() {
                                         ).show()
                                     }
                                 }
+                                 */
+                                
+                                appState.onSelectedItem(item)
                                 selectedItem.value = item
                             },
                             modifier = Modifier.padding(horizontal = 12.dp)
@@ -155,8 +184,15 @@ fun MyNavDrawerApp() {
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
+                        /* With No ViewModel
                         text =
                         if (drawerState.isClosed) {
+                            stringResource(id = R.string.swipe_to_open)
+                        } else {
+                            stringResource(id = R.string.swipe_to_close)
+                        }
+                         */
+                        text = if (appState.drawerState.isClosed){
                             stringResource(id = R.string.swipe_to_open)
                         } else {
                             stringResource(id = R.string.swipe_to_close)
